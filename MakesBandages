@@ -1,0 +1,44 @@
+//Prompts for which spinning wheel to use
+if not @findobject 'wheel'
+  promptalias 'wheel'
+endif
+//Prompts for loom to use
+if not @findobject 'loom'
+  sysmsg 'Select the loom'
+  promptalias 'loom'
+endif
+if not @findobject 'scissors'
+  promptalias 'scissors'
+endif
+//Loops until no cotton is found in backpack
+while @counttype 0xdf9 'any' 'backpack' > 0
+  usetype! 0xdf9 'any' 'backpack'
+  waitfortarget 15000
+  @target 'wheel'
+  pause 4000
+endwhile
+//Makes the bolts of cloth
+while @counttype 0xfa0 'any' 'backpack' >= 5
+  for 5
+    usetype! 0xfa0 'any' 'backpack'
+    waitfortarget 15000
+    target! 'loom'
+    pause 1000
+  endfor
+endwhile
+//Uses scissors to cut the cloth
+if @counttype 0xf95 'any' 'backpack' > 0
+  usetype! 0xf9f 'any' 'backpack'
+  waitfortarget 15000
+  findtype 0xf95 'any' 'backpack'
+  target 'found'
+  pause 1000
+endif
+//Cuts the cloth into bandages
+while counttype 0x1766 'any' 'backpack' > 0
+  usetype! 0xf9f 'any' 'backpack'
+  waitfortarget 15000
+  findtype 0x1766 'any' 'backpack'
+  target 'found'
+  pause 1000
+endwhile
